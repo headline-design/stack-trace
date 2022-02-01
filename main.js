@@ -33,6 +33,7 @@ function parse(program) {
             newArray.push(line)
         }
     })
+    console.log("Operations:")
     console.log(newArray)
     return newArray
 }
@@ -59,9 +60,10 @@ function testTeal(prgm){
             console.log("Args:")
             console.log(args)
             opCodes[opCode].op(stack,args)
+            console.log("Stack after opcode " + opCode + ":")
+            console.log(stack)
         }
     })
-    console.log(stack)
 }
 
 
