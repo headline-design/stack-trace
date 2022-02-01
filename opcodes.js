@@ -8,7 +8,7 @@ const opCodes = {
             number: 0,
             type: undefined
         },
-        op: function(stack,args){stack.push(args[0])},
+        op: function(stack,args){stack.push(parseInt(args[0]))},
         inline: true
     },
     "+": {
@@ -20,7 +20,7 @@ const opCodes = {
             number: 2,
             type: undefined
         },
-        op: function(stack,args){stack.push(parseInt(args[0]) + parseInt(args[1] ))},
+        op: function(stack,args){stack.push(args[0] + args[1] )},
         inline: false
     }
 }
