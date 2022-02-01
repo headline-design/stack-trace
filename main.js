@@ -53,6 +53,9 @@ function testTeal(prgm){
             let numArgs = opCodes[opCode].pops.number
             console.log("numArgs")
             console.log(numArgs)
+            console.log("Type:")
+            let type = opCodes[opCode].pops.type
+            console.log(type)
             let args = []
             for (let i = 0; i < numArgs; i++){
                 args.push(stack.pop())
