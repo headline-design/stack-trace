@@ -77,7 +77,7 @@ function testTeal(prgm){
         let numArgs = opCodes[opCode].pops.number
         console.log('\x1b[36m%s\x1b[0m', "OpCode:")
         console.log('\x1b[31m%s\x1b[0m', opCode)
-        console.log("numArgs")
+        console.log("Pops:")
         console.log(numArgs)
         console.log("Type:")
         let type = opCodes[opCode].pops.type
