@@ -6,18 +6,18 @@ TEAL (Transaction Execution Approval Language) is an assembly-like stack languag
 ## Progress report: 
 Stack Trace currently supports the following opcodes:
 
-    -  int
-    -  +
-    -  -            
-    -  *
-    -  /
-    -  byte
-    -  store
-    -  load,
-    -  app_local_get
-    -  app_global_get
-    -  app_local_put
-    -  app_global_put
+-  int
+-  +
+-  -            
+-  *
+-  /
+-  byte
+-  store
+-  load,
+-  app_local_get
+-  app_global_get
+-  app_local_put
+-  app_global_put
 
 ## Extending:
 To add more opcodes, simply add the opcode as a new key to the opCodes object in `opcodes.js`. A complete list and description of TEAL opcodes is available at:
@@ -46,10 +46,10 @@ app_global_put: {
 
 ### Opcode object keys:
 
-    -  `pushes.number`: number of values (if any) that will be added to the stack
-    -  `pops.number`: number of values (if any) that will be removed from the stack and used as arguments for the op function
-    -  `op`: function that will be executed by the opcode (all op functions must take in the args (stack, args, storage, accounts, app_global)
-    -  `inline`: boolean value that indicates whether the opcode takes arguments from the stack or inline
+-  `pushes.number`: number of values (if any) that will be added to the stack
+-  `pops.number`: number of values (if any) that will be removed from the stack and used as arguments for the op function
+-  `op`: function that will be executed by the opcode (all op functions must take in the args (stack, args, storage, accounts, app_global)
+-  `inline`: boolean value that indicates whether the opcode takes arguments from the stack or inline
 
 ## Usage:
 Stack Trace is very simple to use, as it currently has no dependencies. After cloning the repository, simply paste the TEAL code to evaluate into the teal var in main.js. To add dummy transactions and/or app global/local state values, simply modify the `txns`, `app_global`, and/or `accounts` variables in `main.js`. In the terminal, enter:
