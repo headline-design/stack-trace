@@ -8,7 +8,7 @@ Stack Trace currently supports the following opcodes:
 
 -  int
 -  +
--  -            
+-  -
 -  *
 -  /
 -  byte
