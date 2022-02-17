@@ -75,8 +75,8 @@ function testTeal(prgm){
         let elements = line.split(" ")
         let opCode = elements[0]
         let numArgs = opCodes[opCode].pops.number
-        console.log("OpCode:")
-        console.log(opCode)
+        console.log('\x1b[36m%s\x1b[0m', "OpCode:")
+        console.log('\x1b[31m%s\x1b[0m', opCode)
         console.log("numArgs")
         console.log(numArgs)
         console.log("Type:")
@@ -99,6 +99,7 @@ function testTeal(prgm){
         }
         console.log("Stack after opcode " + opCode + ":")
         console.log(stack)
+        console.log("")
     })
 
     console.log("App Global State:")
