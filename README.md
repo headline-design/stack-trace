@@ -6,18 +6,18 @@ TEAL (Transaction Execution Approval Language) is an assembly-like stack languag
 ## Progress report: 
 Stack Trace currently supports the following opcodes:
 
--  int
--  +
--  -
--  *
--  /
--  byte
--  store
--  load,
--  app_local_get
--  app_global_get
--  app_local_put
--  app_global_put
+-  `int`
+-  `+`
+-  `-`
+-  `*`
+-  `/`
+-  `byte`
+-  `store`
+-  `load`
+-  `app_local_get`
+-  `app_global_get`
+-  `app_local_put`
+-  `app_global_put`
 
 ## Extending:
 To add more opcodes, simply add the opcode as a new key to the opCodes object in `opcodes.js`. A complete list and description of TEAL opcodes is available at:
