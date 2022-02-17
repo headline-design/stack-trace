@@ -1,6 +1,18 @@
 # stack-trace
 A JavaScript tool for debugging Algorand TEAL
 
+```bash
+Supported OpCodes:
+[
+  'int',           '+',
+  '-',             '*',
+  '/',             'byte',
+  'store',         'load',
+  'app_local_get', 'app_global_get',       
+  'app_local_put', 'app_global_put'        
+]
+```
+
 ## Usage
 
 The code currently is run in the command line, but we will be porting it to a browser app soon. 
