@@ -6,25 +6,27 @@ var stack = []
 let txns = []
 
 export const app_global = {
-    depositAmount: 200,
-    staked: 100
+    depositAmount: 201,
+    staked: 103
 }
 
 export var accounts = [
-    {amt: 50 }
+    {amt: 57 }
 ]
 
 var storage = []
 
 var teal = `
+byte "staked"
+app_global_get
 int 0
 byte "amt"
 app_local_get
+/
+store 3
 byte "depositAmount"
 app_global_get
-*
-byte "staked"
-app_global_get
+load 3
 /
 store 1
 load 1
@@ -119,7 +121,7 @@ function testTeal(prgm){
     console.log("App Global State:")
     console.log(app_global)
     console.log("App Local State:")
-    console.log(accounts[0])
+    console.log(accounts)
 }
 
 

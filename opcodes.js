@@ -46,7 +46,7 @@ const opCodes = {
             number: 2,
             type: "uint64"
         },
-        op: function(stack,args){stack.push(args[0] * args[1] )},
+        op: function(stack,args){stack.push((args[0] * args[1] ))},
         inline: false
     },
     "/": {
@@ -58,7 +58,7 @@ const opCodes = {
             number: 2,
             type: "uint64"
         },
-        op: function(stack,args){stack.push(args[0] / args[1] )},
+        op: function(stack,args){stack.push(Math.round(args[0] / args[1] ))},
         inline: false
     },
     byte: {
@@ -145,7 +145,10 @@ const opCodes = {
             type: "any"
         },
         op: function(stack,args,undefined,accounts){
-            accounts[args[0]] = args[1]
+            let arg1 = args[0]
+            let arg2 = args[1]
+            let arg3 = args[2]
+            accounts[arg1][arg2] = arg3
         },
         inline: false
     },
