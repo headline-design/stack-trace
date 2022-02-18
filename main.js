@@ -7,11 +7,11 @@ let txns = []
 
 export const app_global = {
     depositAmount: 200,
-    staked: 240
+    staked: 100
 }
 
 export var accounts = [
-    {amt: 150 }
+    {amt: 50 }
 ]
 
 var storage = []
@@ -26,6 +26,8 @@ app_global_get
 byte "staked"
 app_global_get
 /
+store 1
+load 1
 int 0
 byte "amt"
 app_local_get
@@ -39,6 +41,18 @@ byte "amt"
 app_local_get
 -
 app_global_put
+//update global deposit
+byte "depositAmount"
+byte "depositAmount"
+app_global_get
+load 1
+-
+app_global_put
+//update local staked
+int 0 
+byte "amt"
+int 0
+app_local_put
 `
 
 const removals = [
