@@ -18,6 +18,12 @@ Stack Trace currently supports the following opcodes:
 -  `app_global_get`
 -  `app_local_put`
 -  `app_global_put`
+-  `&&`
+-  `>`
+-  `>=`
+-  `<`
+-  `<=`
+-  `global`
 
 ## Extending:
 To add more opcodes, simply add the opcode as a new key to the opCodes object in `opcodes.js`. A complete list and description of TEAL opcodes is available at:

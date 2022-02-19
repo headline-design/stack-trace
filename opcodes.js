@@ -1,4 +1,4 @@
-import {accounts, app_global} from './main.js'
+// include this file in <script> for browser usage
 
 const opCodes = {
     int: {
@@ -10,7 +10,9 @@ const opCodes = {
             number: 0,
             type: "uint64"
         },
-        op: function(stack,args){stack.push(parseInt(args[0]))},
+        op: function (stack, args, storage, accounts, app_global,global) {
+            stack.push(parseInt(args[0]))
+        },
         inline: true
     },
     "+": {
@@ -22,7 +24,9 @@ const opCodes = {
             number: 2,
             type: "uint64"
         },
-        op: function(stack,args){stack.push(args[0] + args[1] )},
+        op: function (stack, args, storage, accounts, app_global,global) {
+            stack.push(args[0] + args[1])
+        },
         inline: false
     },
     "-": {
@@ -34,7 +38,9 @@ const opCodes = {
             number: 2,
             type: "uint64"
         },
-        op: function(stack,args){stack.push(args[0] - args[1] )},
+        op: function (stack, args, storage, accounts, app_global,global) {
+            stack.push(args[0] - args[1])
+        },
         inline: false
     },
     "*": {
@@ -46,7 +52,9 @@ const opCodes = {
             number: 2,
             type: "uint64"
         },
-        op: function(stack,args){stack.push((args[0] * args[1] ))},
+        op: function (stack, args, storage, accounts, app_global,global) {
+            stack.push((args[0] * args[1]))
+        },
         inline: false
     },
     "/": {
@@ -58,7 +66,9 @@ const opCodes = {
             number: 2,
             type: "uint64"
         },
-        op: function(stack,args){stack.push(Math.round(args[0] / args[1] ))},
+        op: function (stack, args, storage, accounts, app_global,global) {
+            stack.push(Math.round(args[0] / args[1]))
+        },
         inline: false
     },
     byte: {
@@ -70,7 +80,7 @@ const opCodes = {
             number: 0,
             type: "string"
         },
-        op: function(stack,args){
+        op: function (stack, args, storage, accounts, app_global,global) {
             args[0] = args[0].replace(/"/g, "")
             stack.push(args[0])
         },
@@ -85,7 +95,7 @@ const opCodes = {
             number: 1,
             type: "any"
         },
-        op: function(stack,args,storage){
+        op: function (stack, args, storage, accounts, app_global,global) {
             let index = parseInt(args[0])
             let sindex = stack.length - 1
             storage[index] = stack[sindex]
@@ -101,7 +111,7 @@ const opCodes = {
             number: 0,
             type: "any"
         },
-        op: function(stack,args,storage){
+        op: function (stack, args, storage, accounts, app_global,global) {
             let index = parseInt(args[0])
             stack.push(storage[index])
         },
@@ -116,7 +126,7 @@ const opCodes = {
             number: 2,
             type: "any"
         },
-        op: function(stack,args){
+        op: function (stack, args, storage, accounts, app_global,global) {
             stack.push(accounts[args[0]][args[1]])
         },
         inline: false
@@ -130,7 +140,7 @@ const opCodes = {
             number: 1,
             type: "any"
         },
-        op: function(stack,args){
+        op: function (stack, args, storage, accounts, app_global,global) {
             stack.push(app_global[args[0]])
         },
         inline: false
@@ -144,7 +154,7 @@ const opCodes = {
             number: 3,
             type: "any"
         },
-        op: function(stack,args,undefined,accounts){
+        op: function (stack, args, storage, accounts, app_global,global) {
             let arg1 = args[0]
             let arg2 = args[1]
             let arg3 = args[2]
@@ -161,11 +171,141 @@ const opCodes = {
             number: 2,
             type: "any"
         },
-        op: function(stack,args,undefined,accounts,app_global){
+        op: function (stack, args, storage, accounts, app_global,global) {
             app_global[args[0]] = args[1]
         },
         inline: false
     },
+    "&&": {
+        pushes: {
+            number: 1,
+            type: "uint64"
+        },
+        pops: {
+            number: 2,
+            type: "uint64"
+        },
+        op: function (stack, args, storage, accounts, app_global,global) {
+            if (args[0] && args[1]){
+                stack.push(1)
+            }
+            else{
+                stack.push(0)
+            }
+        },
+        inline: false
+    },
+    "||": {
+        pushes: {
+            number: 1,
+            type: "uint64"
+        },
+        pops: {
+            number: 2,
+            type: "uint64"
+        },
+        op: function (stack, args, storage, accounts, app_global,global) {
+            if (args[0] || args[1]){
+                stack.push(1)
+            }
+            else{
+                stack.push(0)
+            }
+        },
+        inline: false
+    },
+    "<": {
+        pushes: {
+            number: 1,
+            type: "uint64"
+        },
+        pops: {
+            number: 2,
+            type: "uint64"
+        },
+        op: function (stack, args, storage, accounts, app_global,global) {
+            if (args[0] < args[1]){
+                stack.push(1)
+            }
+            else{
+                stack.push(0)
+            }
+        },
+        inline: false
+    },
+    ">": {
+        pushes: {
+            number: 1,
+            type: "uint64"
+        },
+        pops: {
+            number: 2,
+            type: "uint64"
+        },
+        op: function (stack, args, storage, accounts, app_global,global) {
+            if (args[0] > args[1]){
+                stack.push(1)
+            }
+            else{
+                stack.push(0)
+            }
+        },
+        inline: false
+    },
+    "<=": {
+        pushes: {
+            number: 1,
+            type: "uint64"
+        },
+        pops: {
+            number: 2,
+            type: "uint64"
+        },
+        op: function (stack, args, storage, accounts, app_global,global) {
+            if (args[0] <= args[1]){
+                stack.push(1)
+            }
+            else{
+                stack.push(0)
+            }
+        },
+        inline: false
+    },
+    ">=": {
+        pushes: {
+            number: 1,
+            type: "uint64"
+        },
+        pops: {
+            number: 2,
+            type: "uint64"
+        },
+        op: function (stack, args, storage, accounts, app_global,global) {
+            if (args[0] >= args[1]){
+                stack.push(1)
+            }
+            else{
+                stack.push(0)
+            }
+        },
+        inline: false
+    },
+    global: {
+        pushes: {
+            number: 1,
+            type: "any"
+        },
+        pops: {
+            number: 0,
+            type: "undefined"
+        },
+        op: function (stack, args, storage, accounts, app_global,global) {
+            stack.push(global[args[0]])
+        },
+        inline: true
+    }
+    
+
 }
 
 export default opCodes

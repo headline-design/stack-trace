@@ -3,6 +3,10 @@ import opCodes from './opcodes.js'
 
 var stack = []
 
+var global = {
+    Round:12345
+}
+
 let txns = []
 
 export const app_global = {
@@ -55,6 +59,9 @@ int 0
 byte "amt"
 int 0
 app_local_put
+int 158
+&&
+global Round
 `
 
 const removals = [
@@ -102,7 +109,7 @@ function testTeal(prgm){
         if (opCodes[opCode].inline === true) {
             elements.shift()
             let args = elements
-            opCodes[opCode].op(stack,args,storage,accounts,app_global)
+            opCodes[opCode].op(stack,args,storage,accounts,app_global,global)
         }
         else{
             let args = []
