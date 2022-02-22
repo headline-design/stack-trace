@@ -1,27 +1,28 @@
 //comment out following line for browser-only usage
 import opCodes from './opcodes.js'
 
-var stack = []
+const progData = {
 
-var global = {
-    Round:12345
+    stack: [0],
+    index: 0,
+    global: {
+        Round: 12345
+    },
+    txns: [0],
+    app_global: {
+        depositAmount: 10000000000,
+        staked: 9500000000
+    },
+    accounts: [
+        { amt: 4000000000 }
+    ],
+    storage: [0,0,0,0,0],
+    branch: false,
+    branchTo: ""
+
 }
 
-let txns = []
-
-export const app_global = {
-    depositAmount: 201,
-    staked: 103
-}
-
-export var accounts = [
-    {amt: 57 }
-]
-
-var storage = []
-
-var teal = `
-byte "staked"
+var teal = `byte "staked"
 app_global_get
 int 0
 byte "amt"
@@ -39,29 +40,10 @@ byte "amt"
 app_local_get
 +
 store 0
-byte "staked"
-byte "staked"
-app_global_get
-int 0
-byte "amt"
-app_local_get
--
-app_global_put
-//update global deposit
-byte "depositAmount"
-byte "depositAmount"
-app_global_get
-load 1
--
-app_global_put
-//update local staked
-int 0 
-byte "amt"
-int 0
-app_local_put
-int 158
-&&
-global Round
+int 1
+bnz test
+test:
+byte "hello"
 `
 
 const removals = [
@@ -91,44 +73,70 @@ function parse(program) {
     return newArray
 }
 
-function testTeal(prgm){
+function testTeal(prgm) {
     let parsed = parse(prgm)
-    parsed.forEach(line => {
-        line = line.trimEnd()
-        let elements = line.split(" ")
-        let opCode = elements[0]
-        let numArgs = opCodes[opCode].pops.number
-        console.log('\x1b[36m%s\x1b[0m', "OpCode:")
-        console.log('\x1b[31m%s\x1b[0m', opCode)
-        console.log("Pops:")
-        console.log(numArgs)
-        console.log("Type:")
-        let type = opCodes[opCode].pops.type
-        console.log(type)
+    for (let i = progData.index; i < parsed.length; i++) {
 
-        if (opCodes[opCode].inline === true) {
-            elements.shift()
-            let args = elements
-            opCodes[opCode].op(stack,args,storage,accounts,app_global,global)
+        let line = parsed[i]
+
+        if (!progData.branch) {
+            line = line.trimEnd()
+            let elements = line.split(" ")
+            let opCode = elements[0]
+            let numArgs = opCodes[opCode].pops.number
+            console.log('\x1b[36m%s\x1b[0m', "OpCode:")
+            console.log('\x1b[31m%s\x1b[0m', opCode)
+            console.log("Pops:")
+            console.log(numArgs)
+            console.log("Type:")
+            let type = opCodes[opCode].pops.type
+            console.log(type)
+
+            if (opCodes[opCode].inline) {
+
+                let args = []
+
+                if (numArgs > 0) {
+                    console.log("multiple")
+                    for (let i = 0; i < numArgs; i++) {
+                        args.push(progData.stack.pop())
+                    }
+                    //args.reverse()
+                }
+
+                elements.shift()
+                args = [...args,...elements]
+                console.log("Args:")
+                console.log(args)
+                opCodes[opCode].op(progData, args)
+            }
+            else {
+                let args = []
+                for (let i = 0; i < numArgs; i++) {
+                    args.push(progData.stack.pop())
+                }
+                args.reverse()
+                console.log(args)
+                opCodes[opCode].op(progData, args)
+            }
+            console.log("Stack after opcode " + opCode + ":")
+            console.log(progData.stack)
+            console.log("")
+
+            console.log("Storage:")
+            console.log(progData.storage)
         }
         else{
-            let args = []
-            for (let i = 0; i < numArgs; i++){
-                args.push(stack.pop())
+            if (line === progData.branchTo + ":"){
+                progData.branch = false
             }
-            args.reverse()
-            console.log(args)
-            opCodes[opCode].op(stack, args,storage,accounts,app_global)
         }
-        console.log("Stack after opcode " + opCode + ":")
-        console.log(stack)
-        console.log("")
-    })
+    }
 
     console.log("App Global State:")
-    console.log(app_global)
+    console.log(progData.app_global)
     console.log("App Local State:")
-    console.log(accounts)
+    console.log(progData.accounts)
 }
 
 

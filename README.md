@@ -24,6 +24,8 @@ Stack Trace currently supports the following opcodes:
 -  `<`
 -  `<=`
 -  `global`
+-  `b`
+-  `bnz`
 
 ## Extending:
 To add more opcodes, simply add the opcode as a new key to the opCodes object in `opcodes.js`. A complete list and description of TEAL opcodes is available at:
@@ -43,8 +45,8 @@ app_global_put: {
             number: 2,
             type: "any"
         },
-        op: function(stack,args,undefined,accounts,app_global){
-            app_global[args[0]] = args[1]
+        op: function(progData,args){
+            progData.app_global[args[0]] = args[1]
         },
         inline: false
     }
@@ -54,14 +56,14 @@ app_global_put: {
 
 -  `pushes.number`: number of values (if any) that will be added to the stack
 -  `pops.number`: number of values (if any) that will be removed from the stack and used as arguments for the op function
--  `op`: function that will be executed by the opcode (all op functions must take in the args (stack, args, storage, accounts, app_global)
+-  `op`: function that will be executed by the opcode (all op functions must take in the args of `progData` and `args`
 -  `inline`: boolean value that indicates whether the opcode takes arguments from the stack or inline
 
 ## Usage:
 Stack Trace is very simple to use, as it currently has no dependencies. After cloning the repository, simply paste the TEAL code to evaluate into the teal var in main.js. To add dummy transactions and/or app global/local state values, simply modify the `txns`, `app_global`, and/or `accounts` variables in `main.js`. In the terminal, enter:
 
 ```bash
-	node main.js
+node main.js
 ```
 
 The terminal will log the supported opcodes, then proceed to evaluate each opcode and log data in the following format:

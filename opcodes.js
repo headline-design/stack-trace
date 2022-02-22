@@ -10,8 +10,8 @@ const opCodes = {
             number: 0,
             type: "uint64"
         },
-        op: function (stack, args, storage, accounts, app_global,global) {
-            stack.push(parseInt(args[0]))
+        op: function (progData,args) {
+            progData.stack.push(parseInt(args[0]))
         },
         inline: true
     },
@@ -24,8 +24,8 @@ const opCodes = {
             number: 2,
             type: "uint64"
         },
-        op: function (stack, args, storage, accounts, app_global,global) {
-            stack.push(args[0] + args[1])
+        op: function (progData,args) {
+            progData.stack.push(args[0] + args[1])
         },
         inline: false
     },
@@ -38,8 +38,8 @@ const opCodes = {
             number: 2,
             type: "uint64"
         },
-        op: function (stack, args, storage, accounts, app_global,global) {
-            stack.push(args[0] - args[1])
+        op: function (progData,args) {
+            progData.stack.push(args[0] - args[1])
         },
         inline: false
     },
@@ -52,8 +52,8 @@ const opCodes = {
             number: 2,
             type: "uint64"
         },
-        op: function (stack, args, storage, accounts, app_global,global) {
-            stack.push((args[0] * args[1]))
+        op: function (progData,args) {
+            progData.stack.push((args[0] * args[1]))
         },
         inline: false
     },
@@ -66,8 +66,8 @@ const opCodes = {
             number: 2,
             type: "uint64"
         },
-        op: function (stack, args, storage, accounts, app_global,global) {
-            stack.push(Math.round(args[0] / args[1]))
+        op: function (progData,args) {
+            progData.stack.push(Math.round(args[0] / args[1]))
         },
         inline: false
     },
@@ -80,9 +80,9 @@ const opCodes = {
             number: 0,
             type: "string"
         },
-        op: function (stack, args, storage, accounts, app_global,global) {
+        op: function (progData,args) {
             args[0] = args[0].replace(/"/g, "")
-            stack.push(args[0])
+            progData.stack.push(args[0])
         },
         inline: true
     },
@@ -95,10 +95,9 @@ const opCodes = {
             number: 1,
             type: "any"
         },
-        op: function (stack, args, storage, accounts, app_global,global) {
-            let index = parseInt(args[0])
-            let sindex = stack.length - 1
-            storage[index] = stack[sindex]
+        op: function (progData,args) {
+            let index = parseInt(args[1])
+            progData.storage[index] = args[0]
         },
         inline: true
     },
@@ -111,9 +110,9 @@ const opCodes = {
             number: 0,
             type: "any"
         },
-        op: function (stack, args, storage, accounts, app_global,global) {
+        op: function (progData,args) {
             let index = parseInt(args[0])
-            stack.push(storage[index])
+            progData.stack.push(progData.storage[index])
         },
         inline: true
     },
@@ -126,8 +125,8 @@ const opCodes = {
             number: 2,
             type: "any"
         },
-        op: function (stack, args, storage, accounts, app_global,global) {
-            stack.push(accounts[args[0]][args[1]])
+        op: function (progData,args) {
+            progData.stack.push(progData.accounts[args[0]][args[1]])
         },
         inline: false
     },
@@ -140,8 +139,8 @@ const opCodes = {
             number: 1,
             type: "any"
         },
-        op: function (stack, args, storage, accounts, app_global,global) {
-            stack.push(app_global[args[0]])
+        op: function (progData,args) {
+            progData.stack.push(progData.app_global[args[0]])
         },
         inline: false
     },
@@ -154,11 +153,11 @@ const opCodes = {
             number: 3,
             type: "any"
         },
-        op: function (stack, args, storage, accounts, app_global,global) {
+        op: function (progData,args) {
             let arg1 = args[0]
             let arg2 = args[1]
             let arg3 = args[2]
-            accounts[arg1][arg2] = arg3
+            progData.accounts[arg1][arg2] = arg3
         },
         inline: false
     },
@@ -171,8 +170,8 @@ const opCodes = {
             number: 2,
             type: "any"
         },
-        op: function (stack, args, storage, accounts, app_global,global) {
-            app_global[args[0]] = args[1]
+        op: function (progData,args) {
+            progData.app_global[args[0]] = args[1]
         },
         inline: false
     },
@@ -185,12 +184,12 @@ const opCodes = {
             number: 2,
             type: "uint64"
         },
-        op: function (stack, args, storage, accounts, app_global,global) {
+        op: function (progData,args) {
             if (args[0] && args[1]){
-                stack.push(1)
+                progData.stack.push(1)
             }
             else{
-                stack.push(0)
+                progData.stack.push(0)
             }
         },
         inline: false
@@ -204,12 +203,12 @@ const opCodes = {
             number: 2,
             type: "uint64"
         },
-        op: function (stack, args, storage, accounts, app_global,global) {
+        op: function (progData,args) {
             if (args[0] || args[1]){
-                stack.push(1)
+                progData.stack.push(1)
             }
             else{
-                stack.push(0)
+                progData.stack.push(0)
             }
         },
         inline: false
@@ -223,12 +222,12 @@ const opCodes = {
             number: 2,
             type: "uint64"
         },
-        op: function (stack, args, storage, accounts, app_global,global) {
+        op: function (progData,args) {
             if (args[0] < args[1]){
-                stack.push(1)
+                progData.stack.push(1)
             }
             else{
-                stack.push(0)
+                progData.stack.push(0)
             }
         },
         inline: false
@@ -242,12 +241,12 @@ const opCodes = {
             number: 2,
             type: "uint64"
         },
-        op: function (stack, args, storage, accounts, app_global,global) {
+        op: function (progData,args) {
             if (args[0] > args[1]){
-                stack.push(1)
+                progData.stack.push(1)
             }
             else{
-                stack.push(0)
+                progData.stack.push(0)
             }
         },
         inline: false
@@ -261,12 +260,12 @@ const opCodes = {
             number: 2,
             type: "uint64"
         },
-        op: function (stack, args, storage, accounts, app_global,global) {
+        op: function (progData,args) {
             if (args[0] <= args[1]){
-                stack.push(1)
+                progData.stack.push(1)
             }
             else{
-                stack.push(0)
+                progData.stack.push(0)
             }
         },
         inline: false
@@ -280,12 +279,12 @@ const opCodes = {
             number: 2,
             type: "uint64"
         },
-        op: function (stack, args, storage, accounts, app_global,global) {
+        op: function (progData,args) {
             if (args[0] >= args[1]){
-                stack.push(1)
+                progData.stack.push(1)
             }
             else{
-                stack.push(0)
+                progData.stack.push(0)
             }
         },
         inline: false
@@ -299,8 +298,40 @@ const opCodes = {
             number: 0,
             type: "undefined"
         },
-        op: function (stack, args, storage, accounts, app_global,global) {
-            stack.push(global[args[0]])
+        op: function (progData,args) {
+            progData.stack.push(global[args[0]])
+        },
+        inline: true
+    },
+    b: {
+        pushes: {
+            number: 0,
+            type: "undefined"
+        },
+        pops: {
+            number: 0,
+            type: "undefined"
+        },
+        op: function (progData,args) {
+            progData.branch = true
+            progData.branchTo = args[0].replace(/"/g, "")
+        },
+        inline: true
+    },
+    bnz: {
+        pushes: {
+            number: 0,
+            type: "undefined"
+        },
+        pops: {
+            number: 1,
+            type: "uint64"
+        },
+        op: function (progData,args) {
+            if(args[0] > 0){
+            progData.branch = true
+            progData.branchTo = args[1].replace(/"/g, "")
+            }
         },
         inline: true
     }
@@ -308,4 +339,5 @@ const opCodes = {
 
 }
 
+//comment out this line for browser usage
 export default opCodes
