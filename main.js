@@ -3,12 +3,12 @@ import opCodes from './opcodes.js'
 
 const progData = {
 
-    stack: [0],
+    stack: [],
     index: 0,
     global: {
         Round: 12345
     },
-    txns: [0],
+    txns: [{amount: 3}],
     app_global: {
         depositAmount: 10000000000,
         staked: 9500000000
@@ -16,7 +16,7 @@ const progData = {
     accounts: [
         { amt: 4000000000 }
     ],
-    storage: [0,0,0,0,0],
+    storage: [],
     branch: false,
     branchTo: ""
 
@@ -40,7 +40,11 @@ byte "amt"
 app_local_get
 +
 store 0
-int 1
+txn amount
+byte "b"
+swap
+return
+int 0
 bnz test
 test:
 byte "hello"
@@ -83,51 +87,54 @@ function testTeal(prgm) {
             line = line.trimEnd()
             let elements = line.split(" ")
             let opCode = elements[0]
-            let numArgs = opCodes[opCode].pops.number
-            console.log('\x1b[36m%s\x1b[0m', "OpCode:")
-            console.log('\x1b[31m%s\x1b[0m', opCode)
-            console.log("Pops:")
-            console.log(numArgs)
-            console.log("Type:")
-            let type = opCodes[opCode].pops.type
-            console.log(type)
 
-            if (opCodes[opCode].inline) {
+            if (!opCode.includes(":")) {
+
+                let numArgs = opCodes[opCode].pops.number
+                let type = opCodes[opCode].pops.type
+                console.log('\x1b[36m%s\x1b[0m', "OpCode:")
+                console.log('\x1b[31m%s\x1b[0m', opCode)
+                console.log("Pops: " + numArgs)
+                console.log("Pops Type: " + type)
 
                 let args = []
 
-                if (numArgs > 0) {
-                    console.log("multiple")
+                if (opCodes[opCode].inline) {
+
+                    if (numArgs > 0) {
+                        for (let i = 0; i < numArgs; i++) {
+                            args.push(progData.stack.pop())
+                        }
+                        args.reverse()
+                    }
+
+                    elements.shift()
+                    args = [...args, ...elements]
+                    opCodes[opCode].op(progData, args)
+                }
+                else {
+
                     for (let i = 0; i < numArgs; i++) {
                         args.push(progData.stack.pop())
                     }
-                    //args.reverse()
+                    args.reverse()
+                    opCodes[opCode].op(progData, args)
                 }
 
-                elements.shift()
-                args = [...args,...elements]
-                console.log("Args:")
+                console.log("Args")
                 console.log(args)
-                opCodes[opCode].op(progData, args)
-            }
-            else {
-                let args = []
-                for (let i = 0; i < numArgs; i++) {
-                    args.push(progData.stack.pop())
-                }
-                args.reverse()
-                console.log(args)
-                opCodes[opCode].op(progData, args)
-            }
-            console.log("Stack after opcode " + opCode + ":")
-            console.log(progData.stack)
-            console.log("")
 
-            console.log("Storage:")
-            console.log(progData.storage)
+                console.log("Stack after opcode " + opCode + ":")
+                console.log(progData.stack)
+
+                console.log("Storage:")
+                console.log(progData.storage)
+
+                console.log("")
+            }
         }
-        else{
-            if (line === progData.branchTo + ":"){
+        else {
+            if (line === progData.branchTo + ":") {
                 progData.branch = false
             }
         }
