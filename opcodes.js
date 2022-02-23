@@ -417,7 +417,7 @@ const opCodes = {
             progData.branch = true
             progData.branchTo = ""
         },
-        inline: true
+        inline: false
     },
     pop: {
         pushes: {
@@ -431,7 +431,7 @@ const opCodes = {
         op: function (progData, args) {
             progData.stack.pop()
         },
-        inline: true
+        inline: false
     },
     txn: {
         pushes: {
@@ -462,7 +462,7 @@ const opCodes = {
             progData.stack.push(b)
             progData.stack.push(a)
         },
-        inline: true
+        inline: false
     },
 
 }

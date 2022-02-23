@@ -79,14 +79,15 @@ The terminal will log the supported opcodes, then proceed to evaluate each opcod
 
 ```bash
 OpCode:
-+
-Pops:
-2
-Type:
-uint64
-[ 125, 150 ]
-Stack after opcode +:
-[ 275 ]
+swap
+Pops: 2
+Pops Type: any
+Args
+[ 3, 'b' ]
+Stack after opcode swap:
+[ 'b', 3 ]
+Storage:
+[ 9000000000, 5000000000, <1 empty item>, 2 ]
 ```
 
 Finally, on completion of the TEAL program, the tracer will log the current local/global states:
