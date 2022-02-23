@@ -1,4 +1,7 @@
-import opCodes from './opcodes.js'
+//comment out following line for browser-only usage
+//import opCodes from './opcodes.js'
+
+var tealLog = ""
 
 const progData = {
 
@@ -49,13 +52,15 @@ test:
 byte "hello"
 `
 
+document.getElementById("teal").innerText = teal
+
 const removals = [
     "#",
     "//"
 ]
 
-console.log("Supported OpCodes:")
-console.log(Object.keys(opCodes))
+log("Supported OpCodes:")
+log(Object.keys(opCodes))
 
 function parse(program) {
     let pArray = program.split("\n")
@@ -71,8 +76,8 @@ function parse(program) {
             newArray.push(line)
         }
     })
-    console.log("Operations:")
-    console.log(newArray)
+    log("Operations:")
+    log(newArray)
     return newArray
 }
 
@@ -91,10 +96,8 @@ function testTeal(prgm) {
 
                 let numArgs = opCodes[opCode].pops.number
                 let type = opCodes[opCode].pops.type
-                console.log('\x1b[36m%s\x1b[0m', "OpCode:")
-                console.log('\x1b[31m%s\x1b[0m', opCode)
-                console.log("Pops: " + numArgs)
-                console.log("Pops Type: " + type)
+                log("OpCode:")
+                log(opCode, "blue")
 
                 let args = []
 
@@ -120,16 +123,16 @@ function testTeal(prgm) {
                     opCodes[opCode].op(progData, args)
                 }
 
-                console.log("Args")
-                console.log(args)
+                log("Args")
+                log(args, "green")
 
-                console.log("Stack after opcode " + opCode + ":")
-                console.log(progData.stack)
+                log("Stack after opcode:")
+                log(progData.stack, "purple")
 
-                console.log("Storage:")
-                console.log(progData.storage)
+                log("Storage:")
+                log(progData.storage)
 
-                console.log("")
+                log("<br>")
             }
         }
         else {
@@ -139,11 +142,16 @@ function testTeal(prgm) {
         }
     }
 
-    console.log("App Global State:")
-    console.log(progData.app_global)
-    console.log("App Local State:")
-    console.log(progData.accounts)
+    log("App Global State:")
+    log(JSON.stringify(progData.app_global))
+    log("App Local State:")
+    log(JSON.stringify(progData.accounts))
 }
 
 
 testTeal(teal)
+
+function log(text,color= "white"){
+    tealLog += '<p style="color:' + color + '">'  + String(text) + "</p>"
+    document.getElementById("log").innerHTML = tealLog
+}

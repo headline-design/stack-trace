@@ -464,5 +464,3 @@ const opCodes = {
     },
 
 }
-
-export default opCodes

@@ -1,0 +1,18 @@
+body {
+    color:white;
+    background-color: black;
+    line-height: 0.5;
+}
+
+td, th {
+    border: 2px solid white;
+    vertical-align:top;
+    }
+
+table {
+    border: 2px solid white
+}
+
+#teal {
+    color: plum
+}
