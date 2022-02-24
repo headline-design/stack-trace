@@ -1,3 +1,5 @@
+//comment out final export for browser usage
+
 const opCodes = {
     int: {
         pushes: {
@@ -465,4 +467,4 @@ const opCodes = {
 
 }
 
-export default opCodes
+//export default opCodes

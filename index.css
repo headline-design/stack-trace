@@ -1,12 +1,12 @@
 body {
     color:white;
     background-color: black;
-    line-height: 0.5;
 }
 
 td, th {
     border: 2px solid white;
     vertical-align:top;
+    width:35%
     }
 
 table {
@@ -14,5 +14,7 @@ table {
 }
 
 #teal {
-    color: plum
+    color: yellow
 }
+
+p { margin: 2; }

@@ -2,6 +2,8 @@
 //import opCodes from './opcodes.js'
 
 var tealLog = ""
+var stackLog = ""
+var tealArray = ""
 
 const progData = {
 
@@ -45,22 +47,20 @@ store 0
 txn amount
 byte "b"
 swap
-return
-int 0
+//return
+int 1
 bnz test
+int 7
 test:
 byte "hello"
 `
 
-document.getElementById("teal").innerText = teal
 
 const removals = [
     "#",
     "//"
 ]
 
-log("Supported OpCodes:")
-log(Object.keys(opCodes))
 
 function parse(program) {
     let pArray = program.split("\n")
@@ -76,16 +76,17 @@ function parse(program) {
             newArray.push(line)
         }
     })
-    log("Operations:")
-    log(newArray)
     return newArray
 }
 
 function testTeal(prgm) {
+    tealLog = ""
+    stackLog = ""
     let parsed = parse(prgm)
     for (let i = progData.index; i < parsed.length; i++) {
 
         let line = parsed[i]
+        tealOps(line,"yellow")
 
         if (!progData.branch) {
             line = line.trimEnd()
@@ -96,8 +97,6 @@ function testTeal(prgm) {
 
                 let numArgs = opCodes[opCode].pops.number
                 let type = opCodes[opCode].pops.type
-                log("OpCode:")
-                log(opCode, "blue")
 
                 let args = []
 
@@ -122,17 +121,6 @@ function testTeal(prgm) {
                     args.reverse()
                     opCodes[opCode].op(progData, args)
                 }
-
-                log("Args")
-                log(args, "green")
-
-                log("Stack after opcode:")
-                log(progData.stack, "purple")
-
-                log("Storage:")
-                log(progData.storage)
-
-                log("<br>")
             }
         }
         else {
@@ -140,6 +128,8 @@ function testTeal(prgm) {
                 progData.branch = false
             }
         }
+        log(progData.storage.length?progData.storage:"empty","aqua")
+        logStack(progData.stack.length?progData.stack:"empty",progData.stack.length?"red":"yellow")
     }
 
     log("App Global State:")
@@ -152,6 +142,16 @@ function testTeal(prgm) {
 testTeal(teal)
 
 function log(text,color= "white"){
-    tealLog += '<p style="color:' + color + '">'  + String(text) + "</p>"
+    tealLog += '<p style="color:' + color + '">'  + text + "</p>"
     document.getElementById("log").innerHTML = tealLog
+}
+
+function logStack(text,color= "white"){
+    stackLog += '<p style="color:' + color + '">'  + text + "</p>"
+    document.getElementById("stackLog").innerHTML = stackLog
+}
+
+function tealOps(text,color= "white"){
+    tealArray += '<p style="color:' + color + '">'  + text + "</p>"
+    document.getElementById("teal").innerHTML = tealArray
 }
