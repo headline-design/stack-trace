@@ -464,6 +464,20 @@ const opCodes = {
         },
         inline: false
     },
+    "%": {
+        pushes: {
+            number: 1,
+            type: "uint64"
+        },
+        pops: {
+            number: 2,
+            type: "uint64"
+        },
+        op: function (progData, args) {
+            progData.stack.push((args[0] % args[1]))
+        },
+        inline: false
+    },
 
 }
 
