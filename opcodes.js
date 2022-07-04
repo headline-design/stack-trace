@@ -478,6 +478,21 @@ const opCodes = {
         },
         inline: false
     },
+    "dup": {
+        pushes: {
+            number: 2,
+            type: "any"
+        },
+        pops: {
+            number: 1,
+            type: "any"
+        },
+        op: function (progData, args) {
+                progData.stack.push(args)
+                progData.stack.push(args)
+        },
+        inline: false
+    },
 
 }
 

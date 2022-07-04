@@ -112,7 +112,7 @@ if (myTeal !== ""){
 
                     if (opCodes[opCode].inline) {
 
-                        if (numArgs > 0) {
+                        if (numArgs >= 1) {
                             for (let i = 0; i < numArgs; i++) {
                                 args.push(progData.stack.pop())
                             }
@@ -127,6 +127,7 @@ if (myTeal !== ""){
 
                         for (let i = 0; i < numArgs; i++) {
                             args.push(progData.stack.pop())
+
                         }
                         args.reverse()
                         opCodes[opCode].op(progData, args)
