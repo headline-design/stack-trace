@@ -18,6 +18,7 @@ Stack Trace currently supports the following opcodes:
 -  `-`
 -  `*`
 -  `/`
+-  `%`
 -  `!=`
 -  `!`
 -  `==`
@@ -35,6 +36,7 @@ Stack Trace currently supports the following opcodes:
 -  `pop`
 -  `txn`
 -  `swap`
+-  `dup`
 
 ## Extending:
 To add more opcodes, simply add the opcode as a new key to the opCodes object in `opcodes.js`. A complete list and description of TEAL opcodes is available at:
@@ -69,7 +71,7 @@ app_global_put: {
 -  `inline`: boolean value that indicates whether the opcode takes arguments from the stack or inline
 
 ## Usage:
-Stack Trace is very simple to use, as it currently has no dependencies. After cloning the repository, simply paste the TEAL code to evaluate into the teal var in main.js. To add dummy transactions and/or app global/local state values, simply modify the `txns`, `app_global`, and/or `accounts` variables in `main.js`. In the terminal, enter:
+Stack Trace is very simple to use, as it currently has no dependencies. After cloning the repository, simply paste the TEAL code to evaluate into the teal var in main.js, or the input field in the html file. To add dummy transactions and/or app global/local state values, simply modify the `txns`, `app_global`, and/or `accounts` variables in `main.js`. In the terminal, enter:
 
 ```bash
 node main.js
